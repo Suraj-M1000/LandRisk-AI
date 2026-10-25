@@ -1,0 +1,348 @@
+
+{% extends "projects/base.html" %}
+{% load static %}
+
+{% block title %}{{ project.name }} | LandRisk AI{% endblock %}
+
+{% block content %}
+<div class="project-detail-page">
+
+    <!-- Page header -->
+    <header class="detail-header">
+        <div class="detail-header-content">
+            <a href="{% url 'project_list' %}" class="back-link">
+                ← Back to Projects
+            </a>
+
+            <p class="detail-eyebrow">PROJECT OVERVIEW</p>
+            <h1>{{ project.name }}</h1>
+
+            <div class="project-meta">
+                <span class="meta-chip">{{ project.get_sector_display }}</span>
+                <span class="meta-chip">{{ project.get_state_display }}</span>
+            </div>
+        </div>
+
+        <div class="detail-header-actions">
+            <a href="{% url 'project_update' project.pk %}"
+               class="btn btn-secondary">
+                Edit Project
+            </a>
+        </div>
+    </header>
+
+    <!-- Project information -->
+    <section class="detail-section">
+        <div class="section-heading">
+            <div>
+                <p class="section-eyebrow">PROJECT INFORMATION</p>
+                <h2>Project Details</h2>
+            </div>
+            <p class="section-subtitle">
+                Current project inputs used for risk assessment.
+            </p>
+        </div>
+
+        <div class="project-info-grid">
+
+            <article class="info-card">
+                <span class="info-label">Project Cost</span>
+                <p class="info-value">
+                    ₹{{ project.project_cost_cr|floatformat:2 }}
+                    <span class="info-unit">crore</span>
+                </p>
+            </article>
+
+            <article class="info-card">
+                <span class="info-label">Planned Duration</span>
+                <p class="info-value">
+                    {{ project.planned_duration_months }}
+                    <span class="info-unit">months</span>
+                </p>
+            </article>
+
+            <article class="info-card">
+                <span class="info-label">Time Elapsed</span>
+                <p class="info-value">
+                    {{ project.months_elapsed }}
+                    <span class="info-unit">months</span>
+                </p>
+            </article>
+
+            <article class="info-card">
+                <span class="info-label">Physical Progress</span>
+                <p class="info-value">
+                    {{ project.physical_progress_pct|floatformat:1 }}%
+                </p>
+                <div class="progress-track">
+                    <div class="progress-fill physical-progress"
+                         style="width: {{ project.physical_progress_pct }}%">
+                    </div>
+                </div>
+            </article>
+
+            <article class="info-card">
+                <span class="info-label">Expenditure</span>
+                <p class="info-value">
+                    {{ project.expenditure_pct|floatformat:1 }}%
+                </p>
+                <div class="progress-track">
+                    <div class="progress-fill expenditure-progress"
+                         style="width: {{ project.expenditure_pct }}%">
+                    </div>
+                </div>
+            </article>
+
+            <article class="info-card">
+                <span class="info-label">Contractor Experience</span>
+                <p class="info-value">
+                    {{ project.contractor_experience_years }}
+                    <span class="info-unit">years</span>
+                </p>
+            </article>
+
+            <article class="info-card">
+                <span class="info-label">Land Acquisition</span>
+                <p class="info-value">
+                    {{ project.land_acquisition_required|yesno:"Required,Not required" }}
+                </p>
+            </article>
+
+            <article class="info-card">
+                <span class="info-label">Land Acquisition Progress</span>
+                <p class="info-value">
+                    {{ project.land_acquisition_pct|floatformat:1 }}%
+                </p>
+                <div class="progress-track">
+                    <div class="progress-fill land-progress"
+                         style="width: {{ project.land_acquisition_pct }}%">
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </section>
+
+    <!-- Monitoring indicators -->
+    <section class="detail-section">
+        <div class="section-heading">
+            <div>
+                <p class="section-eyebrow">PROJECT MONITORING</p>
+                <h2>Monitoring Indicators</h2>
+            </div>
+        </div>
+
+        <p class="section-intro">
+            These indicators compare elapsed schedule, physical progress,
+            and expenditure. They are monitoring estimates, not definitive
+            findings that a project will be delayed.
+        </p>
+
+        <div class="monitoring-grid">
+
+            <article class="monitoring-card">
+                <span class="monitoring-label">Schedule Utilization</span>
+                <p class="monitoring-value">
+                    {% if schedule_utilization != None %}
+                        {{ schedule_utilization|floatformat:1 }}%
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </p>
+                <p class="monitoring-description">
+                    Percentage of planned time that has elapsed.
+                </p>
+            </article>
+
+            <article class="monitoring-card">
+                <span class="monitoring-label">Progress Gap</span>
+                <p class="monitoring-value">
+                    {% if progress_gap > 0 %}+{% endif %}{{ progress_gap|floatformat:1 }}
+                    <span class="info-unit">pp</span>
+                </p>
+                <p class="monitoring-description">
+                    Expenditure percentage minus physical progress.
+                </p>
+            </article>
+
+            <article class="monitoring-card">
+                <span class="monitoring-label">Schedule Status</span>
+                <p class="monitoring-value status-value">
+                    {{ schedule_status }}
+                </p>
+                <p class="monitoring-description">
+                    A heuristic comparison of elapsed time and physical progress.
+                </p>
+            </article>
+
+        </div>
+    </section>
+
+    <!-- Latest prediction -->
+    <section class="detail-section prediction-section">
+        <div class="section-heading">
+            <div>
+                <p class="section-eyebrow">MACHINE LEARNING</p>
+                <h2>Latest Risk Assessment</h2>
+            </div>
+        </div>
+
+        {% if latest_prediction %}
+            <div class="latest-prediction-card">
+
+                <div class="risk-score-panel">
+                    <span class="monitoring-label">Risk Score</span>
+                    <p class="risk-score">
+                        {{ latest_prediction.risk_score }}
+                        <span>/ 100</span>
+                    </p>
+                    <span class="risk-level {% if latest_prediction.is_high_risk %}risk-high{% else %}risk-lower{% endif %}">
+                        {% if latest_prediction.is_high_risk %}
+                            High Risk
+                        {% else %}
+                            Lower Risk
+                        {% endif %}
+                    </span>
+                </div>
+
+                <div class="prediction-details">
+                    <div class="prediction-detail-row">
+                        <span>Risk probability</span>
+                        <strong>
+                            {{ latest_prediction.probability|floatformat:1|default:"0" }}
+                            {% if latest_prediction.probability != None %}%{% endif %}
+                        </strong>
+                    </div>
+
+                    <div class="prediction-detail-row">
+                        <span>Model version</span>
+                        <strong>{{ latest_prediction.model_version }}</strong>
+                    </div>
+
+                    <div class="prediction-detail-row">
+                        <span>Assessment date</span>
+                        <strong>
+                            {{ latest_prediction.created_at|date:"d M Y, H:i" }}
+                        </strong>
+                    </div>
+                </div>
+            </div>
+
+            {% if latest_prediction.warnings %}
+                <div class="prediction-warnings">
+                    <h3>Warnings to Review</h3>
+                    <ul>
+                        {% for warning in latest_prediction.warnings %}
+                            <li>{{ warning }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+        {% else %}
+            <div class="no-prediction-card">
+                <h3>No Risk Assessment Yet</h3>
+                <p>
+                    Generate your first assessment to see the model's risk
+                    score and probability for this project's current inputs.
+                </p>
+            </div>
+        {% endif %}
+
+        <div class="prediction-action">
+            <div>
+                <h3>Run a Risk Assessment</h3>
+                <p>
+                    Uses the project's current saved information and records
+                    the result in prediction history.
+                </p>
+            </div>
+
+            <form
+                method="post"
+                action="{% url 'project_predict' project.pk %}"
+                id="prediction-form"
+            >
+                {% csrf_token %}
+                <button type="submit" id="predict-button" class="btn btn-primary">
+                    Run Risk Prediction
+                </button>
+                <p id="prediction-status" role="status" aria-live="polite"></p>
+            </form>
+        </div>
+
+        <p class="detail-disclaimer">
+            This is a learning and portfolio demonstration. Model predictions
+            are not verified real-world delay forecasts or official decisions.
+        </p>
+    </section>
+
+    <!-- Prediction history -->
+    <section class="detail-section prediction-history">
+        <div class="section-heading">
+            <div>
+                <p class="section-eyebrow">ASSESSMENT RECORDS</p>
+                <h2>Prediction History</h2>
+            </div>
+            <span class="history-count">
+                {{ prediction_history|length }} record{{ prediction_history|length|pluralize }}
+            </span>
+        </div>
+
+        {% if prediction_history %}
+            <div class="history-table-wrapper">
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Risk Score</th>
+                            <th>Probability</th>
+                            <th>Risk Level</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for prediction in prediction_history %}
+                            <tr>
+                                <td>{{ prediction.created_at|date:"d M Y, H:i" }}</td>
+                                <td>
+                                    <strong>{{ prediction.risk_score }}/100</strong>
+                                </td>
+                                <td>{{ prediction.probability|floatformat:1 }}%</td>
+                                <td>
+                                    <span class="risk-level {% if prediction.is_high_risk %}risk-high{% else %}risk-lower{% endif %}">
+                                        {% if prediction.is_high_risk %}
+                                            High Risk
+                                        {% else %}
+                                            Lower Risk
+                                        {% endif %}
+                                    </span>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p class="empty-history">
+                No predictions recorded yet. Run a risk assessment above to
+                create the first history record.
+            </p>
+        {% endif %}
+    </section>
+
+    <!-- Bottom navigation -->
+    <footer class="detail-footer">
+        <a href="{% url 'project_list' %}" class="btn btn-secondary">
+            Back to Projects
+        </a>
+        <a href="{% url 'project_update' project.pk %}" class="btn btn-secondary">
+            Edit Project
+        </a>
+    </footer>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/prediction.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,188 @@
+ {% extends 'projects/base.html' %}
+
+{% block title %}Services | LandRisk AI{% endblock %}
+
+{% block content %}
+
+<section class="page-hero">
+    <span class="section-eyebrow">WHAT LANDRISK AI OFFERS</span>
+    <h1>Project Monitoring &amp; Risk Assessment</h1>
+    <p>
+        LandRisk AI brings project information, experimental machine
+        learning risk assessments, and historical results together
+        in one application.
+    </p>
+</section>
+
+<section class="services-section">
+    <div class="section-heading">
+        <span class="section-eyebrow">CURRENT FEATURES</span>
+        <h2>What You Can Do</h2>
+        <p>
+            The application supports the following project-monitoring
+            and risk-analysis activities.
+        </p>
+    </div>
+
+    <div class="feature-grid">
+
+        <article class="feature-card">
+            <div class="feature-icon">01</div>
+            <h3>Project Management</h3>
+            <p>
+                Create projects and record details such as sector,
+                state, estimated cost, planned duration, progress,
+                expenditure, contractor experience, and land acquisition.
+                Update or delete your own project records when needed.
+            </p>
+        </article>
+
+        <article class="feature-card">
+            <div class="feature-icon">02</div>
+            <h3>ML-Based Risk Assessment</h3>
+            <p>
+                Run the integrated machine learning pipeline using
+                the recorded project information. Review the estimated
+                delay-risk probability and risk score.
+            </p>
+        </article>
+
+        <article class="feature-card">
+            <div class="feature-icon">03</div>
+            <h3>Risk Explanations</h3>
+            <p>
+                Review the available explanations and warnings associated
+                with an assessment to understand which recorded factors
+                may contribute to the estimated risk.
+            </p>
+        </article>
+
+        <article class="feature-card">
+            <div class="feature-icon">04</div>
+            <h3>Prediction History</h3>
+            <p>
+                Save assessment results and revisit previous predictions
+                for a project. Compare recorded assessments over time
+                as new assessments are generated.
+            </p>
+        </article>
+
+        <article class="feature-card">
+            <div class="feature-icon">05</div>
+            <h3>Project Monitoring Indicators</h3>
+            <p>
+                Inspect indicators such as schedule utilization,
+                the difference between expenditure and physical progress,
+                and the application's heuristic schedule status.
+            </p>
+        </article>
+
+        <article class="feature-card">
+            <div class="feature-icon">06</div>
+            <h3>Dashboard &amp; Analytics</h3>
+            <p>
+                View project summaries, risk distributions, progress
+                and expenditure comparisons, and schedule-status
+                visualizations from the dashboard.
+            </p>
+        </article>
+
+    </div>
+</section>
+
+<section class="services-workflow">
+    <div class="section-heading">
+        <span class="section-eyebrow">HOW TO USE THE APPLICATION</span>
+        <h2>From Project Entry to Risk Insights</h2>
+    </div>
+
+    <div class="workflow-steps">
+
+        <div class="workflow-step">
+            <span>1</span>
+            <div>
+                <h3>Create an Account</h3>
+                <p>
+                    Sign up and log in to access your project workspace.
+                </p>
+            </div>
+        </div>
+
+        <div class="workflow-step">
+            <span>2</span>
+            <div>
+                <h3>Add Project Details</h3>
+                <p>
+                    Enter the project's cost, schedule, progress,
+                    expenditure, and other required information.
+                </p>
+            </div>
+        </div>
+
+        <div class="workflow-step">
+            <span>3</span>
+            <div>
+                <h3>Run a Risk Assessment</h3>
+                <p>
+                    Open the project details page and request an
+                    assessment using the integrated ML pipeline.
+                </p>
+            </div>
+        </div>
+
+        <div class="workflow-step">
+            <span>4</span>
+            <div>
+                <h3>Review the Results</h3>
+                <p>
+                    Inspect the risk score, probability, warnings,
+                    explanations, and monitoring indicators.
+                </p>
+            </div>
+        </div>
+
+        <div class="workflow-step">
+            <span>5</span>
+            <div>
+                <h3>Monitor Recorded Assessments</h3>
+                <p>
+                    Revisit prediction history and use the dashboard
+                    to review project-level summaries.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="hero-actions">
+        {% if user.is_authenticated %}
+            <a href="{% url 'project_list' %}" class="button">
+                View My Projects
+            </a>
+            <a href="{% url 'dashboard' %}" class="button button-secondary">
+                Open Dashboard
+            </a>
+        {% else %}
+            <a href="{% url 'signup' %}" class="button">
+                Get Started
+            </a>
+            <a href="{% url 'login' %}" class="button button-secondary">
+                Sign In
+            </a>
+        {% endif %}
+    </div>
+</section>
+
+<section class="project-disclaimer">
+    <h2>Scope and Limitations</h2>
+    <p>
+        LandRisk AI is an educational prototype. Its current model
+        uses synthetic training data, and its predictions have not
+        been validated as real-world forecasts. Monitoring indicators
+        are heuristic calculations, not proof that a project will
+        be delayed. Results should not be used to make actual
+        infrastructure, financial, or government decisions.
+    </p>
+</section>
+
+{% endblock %}

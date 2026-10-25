@@ -1,0 +1,228 @@
+{% extends "projects/base.html" %}
+{% load static %}
+
+{% block title %}Project Dashboard | LandRisk AI{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-header">
+    <h1>Project Dashboard</h1>
+    <p>
+        Welcome back, {{ request.user.username }}.
+        Here's your project overview.
+    </p>
+</div>
+
+<div class="dashboard-cards">
+
+    <div class="dashboard-card">
+        <h2>Total Projects</h2>
+        <p class="metric-value">{{ total_projects }}</p>
+    </div>
+
+    <div class="dashboard-card">
+        <h2>High-Risk Projects</h2>
+        <p>{{ high_risk_projects }}</p>
+    </div>
+
+    <div class="dashboard-card">
+        <h2>Total Predictions</h2>
+        <p>{{ total_predictions }}</p>
+    </div>
+
+    <div class="dashboard-card">
+        <h2>Average Physical Progress</h2>
+        <p>
+            {% if average_physical_progress != None %}
+            {{ average_physical_progress|floatformat:1 }}%
+            {% else %}
+            N/A
+            {% endif %}
+        </p>
+    </div>
+
+    <div class="dashboard-card">
+        <h2>Average Expenditure</h2>
+        <p>
+            {% if average_expenditure != None %}
+            {{ average_expenditure|floatformat:1 }}%
+            {% else %}
+            N/A
+            {% endif %}
+        </p>
+    </div>
+
+    <div class="dashboard-card">
+        <h2>Average Risk Score</h2>
+        <p>
+            {% if average_risk_score != None %}
+            {{ average_risk_score|floatformat:1 }}/100
+            {% else %}
+            N/A
+            {% endif %}
+        </p>
+    </div>
+
+
+
+<div class="dashboard-card">
+    <h2>Average Schedule Utilization</h2>
+
+    <p class="metric-value">
+        {% if average_schedule_utilization != None %}
+            {{ average_schedule_utilization|floatformat:1 }}%
+        {% else %}
+            N/A
+        {% endif %}
+    </p>
+
+    <p class="metric-description">
+        Average planned time elapsed across projects.
+    </p>
+</div>
+
+<div class="dashboard-card">
+    <h2>Average Progress Gap</h2>
+
+    <p class="metric-value">
+        {% if average_progress_gap != None %}
+            {% if average_progress_gap > 0 %}+{% endif %}{{ average_progress_gap|floatformat:1 }} pp
+        {% else %}
+            N/A
+        {% endif %}
+    </p>
+
+    <p class="metric-description">
+        Average expenditure minus physical progress.
+    </p>
+</div>
+
+
+
+
+</div>
+
+<section class="dashboard-section">
+    <h2>Physical Progress vs Expenditure</h2>
+
+    <p>
+        Compare the average physical work completed with the average
+        expenditure reported across your projects.
+    </p>
+
+    <div class="risk-chart-container">
+        <canvas id="progressExpenditureChart" role="img"
+            aria-label="Bar chart comparing average physical progress and average expenditure">
+        </canvas>
+    </div>
+
+    {{ average_physical_progress|default_if_none:0|json_script:"physical-progress-data" }}
+    {{ average_expenditure|default_if_none:0|json_script:"expenditure-data" }}
+</section>
+
+<section class="dashboard-section">
+    <h2>Project Risk Distribution</h2>
+
+    <p>
+        Distribution of projects based on their latest saved
+        risk assessment.
+    </p>
+
+    <div class="risk-chart-container">
+        <canvas id="riskDistributionChart" role="img" aria-label="Doughnut chart showing high-risk, lower-risk,
+            and not-assessed projects">
+        </canvas>
+    </div>
+
+    {{ risk_chart_labels|json_script:"risk-chart-labels" }}
+    {{ risk_chart_data|json_script:"risk-chart-data" }}
+</section>
+
+<section class="dashboard-section">
+    <h2>Schedule Status Distribution</h2>
+
+    <p>
+        A preliminary comparison of physical progress against
+        elapsed schedule across your projects.
+    </p>
+
+    <div class="risk-chart-container">
+        <canvas
+            id="scheduleStatusChart"
+            role="img"
+            aria-label="Chart showing projects behind, aligned with, or ahead of elapsed schedule">
+        </canvas>
+    </div>
+
+    {{ schedule_status_labels|json_script:"schedule-status-labels" }}
+    {{ schedule_status_data|json_script:"schedule-status-data" }}
+</section>
+
+
+
+<section class="dashboard-section">
+    <h2>Recent Projects</h2>
+
+    {% if recent_projects %}
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Project</th>
+                    <th>Sector</th>
+                    <th>Latest Risk Score</th>
+                    <th>Risk Level</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for project in recent_projects %}
+                <tr>
+                    <td>{{ project.name }}</td>
+
+                    <td>{{ project.get_sector_display }}</td>
+
+                    <td>
+                        {% if project.latest_risk_score != None %}
+                        {{ project.latest_risk_score }}/100
+                        {% else %}
+                        Not assessed
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if project.latest_is_high_risk == True %}
+                        <span class="risk-high">High Risk</span>
+                        {% elif project.latest_is_high_risk == False %}
+                        <span class="risk-low">Lower Risk</span>
+                        {% else %}
+                        <span class="risk-none">Not assessed</span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        <a href="{% url 'project_detail' project.pk %}">
+                            View Details
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p>You haven't created any projects yet.</p>
+    <a class="button" href="{% url 'project_create' %}">
+        Create Your First Project
+    </a>
+    {% endif %}
+
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'js/dashboard.js' %}"></script>
+{% endblock %}

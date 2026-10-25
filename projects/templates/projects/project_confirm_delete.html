@@ -1,0 +1,61 @@
+
+{% extends "projects/base.html" %}
+
+{% block title %}Delete Project | LandRisk AI{% endblock %}
+
+{% block content %}
+<div class="delete-page">
+
+    <div class="delete-card">
+
+        <div class="delete-icon" aria-hidden="true">!</div>
+
+        <p class="delete-eyebrow">PROJECT MANAGEMENT</p>
+
+        <h1>Delete Project?</h1>
+
+        <p class="delete-intro">
+            You're about to permanently delete this project.
+            Please review the details before continuing.
+        </p>
+
+        <div class="delete-project-info">
+            <span class="delete-info-label">Project name</span>
+            <h2>{{ project.name }}</h2>
+
+            <div class="delete-project-meta">
+                <span>{{ project.get_sector_display }}</span>
+                <span>{{ project.get_state_display }}</span>
+            </div>
+        </div>
+
+        <div class="delete-warning">
+            <strong>This action cannot be undone.</strong>
+            <p>
+                Deleting this project will also delete its associated
+                prediction records. You will lose the project's saved
+                information and prediction history.
+            </p>
+        </div>
+
+        <form method="post" class="delete-form">
+            {% csrf_token %}
+
+            <button type="submit" class="btn-delete">
+                Yes, Delete Project
+            </button>
+
+            <a href="{% url 'project_detail' project.pk %}"
+               class="btn-cancel">
+                Cancel and Return to Project
+            </a>
+        </form>
+
+        <p class="delete-footer-note">
+            No changes will be made unless you confirm deletion.
+        </p>
+
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,135 @@
+
+{% extends 'projects/base.html' %}
+
+
+{% block title %}LandRisk AI | Project Risk Intelligence{% endblock %}
+
+{% block content %}
+
+<section class="home-hero">
+    <div class="hero-content">
+        <span class="hero-tag">PROJECT MONITORING & RISK ANALYTICS</span>
+
+        <h1>Identify Project Risks <span>Before Delays Grow.</span></h1>
+
+        <p class="hero-description">
+            LandRisk AI is a project-monitoring application that combines
+            project information and machine learning to estimate potential
+            delay risk in infrastructure projects, including projects
+            affected by land acquisition.
+        </p>
+
+        <div class="hero-actions">
+            {% if user.is_authenticated %}
+                <a href="{% url 'dashboard' %}" class="button">
+                    Open Dashboard
+                </a>
+                <a href="{% url 'project_create' %}" class="button button-secondary">
+                    Add a Project
+                </a>
+            {% else %}
+                <a href="{% url 'signup' %}" class="button">
+                    Get Started
+                </a>
+                <a href="{% url 'login' %}" class="button button-secondary">
+                    Sign In
+                </a>
+            {% endif %}
+        </div>
+
+        <p class="hero-note">
+            A personal portfolio and learning project inspired by SIH26017.
+        </p>
+    </div>
+</section>
+
+<section class="home-section">
+    <div class="section-heading">
+        <span class="section-eyebrow">WHAT IT OFFERS</span>
+        <h2>One Place to Monitor Project Risk</h2>
+        <p>
+            Organize project information, run experimental risk assessments,
+            and review previous prediction results in one application.
+        </p>
+    </div>
+
+    <div class="feature-grid">
+        <article class="feature-card">
+            <div class="feature-icon">01</div>
+            <h3>Project Tracking</h3>
+            <p>
+                Record project costs, planned duration, progress,
+                expenditure, contractor experience, and land acquisition
+                information.
+            </p>
+        </article>
+
+        <article class="feature-card">
+            <div class="feature-icon">02</div>
+            <h3>ML Risk Assessment</h3>
+            <p>
+                Use an integrated machine learning pipeline to estimate
+                project delay risk from the information provided.
+            </p>
+        </article>
+
+        <article class="feature-card">
+            <div class="feature-icon">03</div>
+            <h3>Prediction History</h3>
+            <p>
+                Save assessment results, inspect risk explanations, and
+                review how a project's recorded assessments change over time.
+            </p>
+        </article>
+    </div>
+</section>
+
+<section class="home-workflow">
+    <div class="workflow-content">
+        <span class="section-eyebrow">HOW IT WORKS</span>
+        <h2>From Project Data to Risk Insights</h2>
+        <p>
+            The application connects a Django-based web interface with a
+            separate Python machine learning module.
+        </p>
+    </div>
+
+    <div class="workflow-steps">
+        <div class="workflow-step">
+            <span>1</span>
+            <div>
+                <h3>Record</h3>
+                <p>Add project details and current progress.</p>
+            </div>
+        </div>
+
+        <div class="workflow-step">
+            <span>2</span>
+            <div>
+                <h3>Assess</h3>
+                <p>Run the trained model on the recorded project data.</p>
+            </div>
+        </div>
+
+        <div class="workflow-step">
+            <span>3</span>
+            <div>
+                <h3>Review</h3>
+                <p>Inspect the estimated risk, explanations, and assessment history.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="project-disclaimer">
+    <h2>Important Project Note</h2>
+    <p>
+        This application is an educational prototype. Its current model
+        uses synthetic training data, so its predictions are experimental
+        and have not been validated as real-world forecasts. Results should
+        not be used as the basis for actual infrastructure or government
+        decisions.
+    </p>
+</section>
+
+{% endblock %}

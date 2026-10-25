@@ -1,0 +1,41 @@
+
+# Virtual environments
+Land_risk/
+.venv/
+venv/
+env/
+
+# Python cache and compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Test and coverage caches
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local databases
+*.sqlite3
+*.sqlite3-journal
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+
+# Editor and operating system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Ignore generated ML artifacts by default
+ml/artifacts/*
+
+# Track the model required for inference and its documentation
+!ml/artifacts/landrisk_model.joblib
+!ml/artifacts/model_card.json

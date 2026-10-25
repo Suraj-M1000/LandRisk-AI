@@ -1,0 +1,164 @@
+ {% extends 'projects/base.html' %}
+
+{% block title %}Roadmap | LandRisk AI{% endblock %}
+
+{% block content %}
+
+<section class="page-hero">
+    <span class="section-eyebrow">THE ROAD AHEAD</span>
+    <h1>What's Next for LandRisk AI?</h1>
+    <p>
+        The project will evolve from an experimental risk-assessment
+        prototype into a more comprehensive project-monitoring and
+        predictive analytics platform through measurable,
+        data-driven improvements.
+    </p>
+</section>
+
+<section class="roadmap-section">
+    <div class="section-heading">
+        <span class="section-eyebrow">FUTURE DEVELOPMENT</span>
+        <h2>Planned Improvements</h2>
+        <p>
+            These are proposed enhancements, not features currently
+            available in the application.
+        </p>
+    </div>
+
+    <div class="roadmap-grid">
+
+        <article class="roadmap-card">
+            <span class="roadmap-number">01</span>
+            <span class="roadmap-status">Planned</span>
+            <h3>Delay-Duration Prediction</h3>
+            <p>
+                Explore regression models to estimate the potential
+                delay duration in months, complementing the existing
+                experimental risk assessment.
+            </p>
+            <p class="roadmap-detail">
+                <strong>Key requirement:</strong> A credible dataset
+                containing actual delay durations and relevant
+                project features.
+            </p>
+        </article>
+
+        <article class="roadmap-card">
+            <span class="roadmap-number">02</span>
+            <span class="roadmap-status">Planned</span>
+            <h3>Project Progress Trends</h3>
+            <p>
+                Track changes in physical progress and expenditure
+                across dated project snapshots to help users inspect
+                how project conditions evolve over time.
+            </p>
+            <p class="roadmap-detail">
+                <strong>Key requirement:</strong> Reliable, dated
+                historical project records.
+            </p>
+        </article>
+
+        <article class="roadmap-card">
+            <span class="roadmap-number">03</span>
+            <span class="roadmap-status">Planned</span>
+            <h3>Model Evaluation &amp; Improvement</h3>
+            <p>
+                Investigate stronger validation methods, compare
+                suitable algorithms, assess classification metrics,
+                and examine how well model outputs generalize
+                to unseen projects.
+            </p>
+            <p class="roadmap-detail">
+                <strong>Key requirement:</strong> Representative
+                labelled data and leakage-aware evaluation.
+            </p>
+        </article>
+
+        <article class="roadmap-card">
+            <span class="roadmap-number">04</span>
+            <span class="roadmap-status">Planned</span>
+            <h3>Richer Risk Explanations</h3>
+            <p>
+                Improve how assessment results communicate influential
+                project factors, uncertainty, and possible monitoring
+                actions to users.
+            </p>
+            <p class="roadmap-detail">
+                <strong>Goal:</strong> Make model outputs easier
+                to interpret without presenting associations
+                as proof of causation.
+            </p>
+        </article>
+
+        <article class="roadmap-card">
+            <span class="roadmap-number">05</span>
+            <span class="roadmap-status">Planned</span>
+            <h3>Project Reports &amp; Data Export</h3>
+            <p>
+                Explore downloadable project summaries containing
+                recorded details, monitoring indicators, and
+                prediction history for review and documentation.
+            </p>
+            <p class="roadmap-detail">
+                <strong>Goal:</strong> Make project information
+                easier to share and review.
+            </p>
+        </article>
+
+        <article class="roadmap-card">
+            <span class="roadmap-number">06</span>
+            <span class="roadmap-status">Planned</span>
+            <h3>More Credible Training Data</h3>
+            <p>
+                Investigate suitable public infrastructure datasets
+                and document their sources, limitations, and
+                suitability for the prediction task.
+            </p>
+            <p class="roadmap-detail">
+                <strong>Goal:</strong> Establish a defensible
+                foundation for future model evaluation.
+            </p>
+        </article>
+
+    </div>
+</section>
+
+<section class="roadmap-principles">
+    <span class="section-eyebrow">DEVELOPMENT PRINCIPLES</span>
+    <h2>Build Responsibly, Improve with Evidence</h2>
+    <p>
+        Future features will be prioritized according to feasibility,
+        data availability, evaluation quality, and user value.
+        A more complex model is not automatically a better model:
+        reliable data and honest evaluation matter more than
+        adding algorithms without evidence.
+    </p>
+</section>
+
+<section class="project-disclaimer">
+    <h2>Current Project Status</h2>
+    <p>
+        LandRisk AI is an educational prototype. Its current risk
+        model uses synthetic training data and has not been validated
+        for real-world forecasting. The items on this roadmap are
+        proposals for future development and should not be interpreted
+        as existing functionality or committed delivery dates.
+    </p>
+</section>
+
+<section class="roadmap-actions">
+    {% if user.is_authenticated %}
+        <a href="{% url 'dashboard' %}" class="button">
+            Return to Dashboard
+        </a>
+    {% else %}
+        <a href="{% url 'signup' %}" class="button">
+            Explore LandRisk AI
+        </a>
+    {% endif %}
+    <a href="{% url 'services' %}" class="button button-secondary">
+        View Current Features
+    </a>
+</section>
+
+{% endblock %}

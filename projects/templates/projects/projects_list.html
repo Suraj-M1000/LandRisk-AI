@@ -1,0 +1,178 @@
+
+{% extends "projects/base.html" %}
+{% load static %}
+
+{% block title %}My Projects | LandRisk AI{% endblock %}
+
+{% block content %}
+
+<section class="projects-page">
+
+    <header class="projects-header">
+        <div>
+            <span class="page-eyebrow">PROJECT MANAGEMENT</span>
+            <h1>Infrastructure Projects</h1>
+            <p>Manage your projects and monitor their recorded details.</p>
+        </div>
+
+        <div class="projects-header-actions">
+            <a href="{% url 'dashboard' %}" class="button button-secondary">
+                View Dashboard
+            </a>
+            <a href="{% url 'project_create' %}" class="button">
+                + Create Project
+            </a>
+        </div>
+    </header>
+
+    <section class="project-filters" aria-label="Project search and filters">
+        <div class="filter-heading">
+            <div>
+                <h2>Find Projects</h2>
+                <p>Search by name or narrow the list by sector and state.</p>
+            </div>
+            <span class="filter-icon" aria-hidden="true">&#8981;</span>
+        </div>
+
+        <div class="filter-controls">
+
+            <div class="filter-field search-field">
+                <label for="project-search">Project name</label>
+                <input
+                    type="search"
+                    id="project-search"
+                    placeholder="Search your projects..."
+                    autocomplete="off"
+                >
+            </div>
+
+            <div class="filter-field">
+                <label for="sector-filter">Sector</label>
+                <select id="sector-filter">
+                    <option value="">All sectors</option>
+                    <option value="roads & highways">Roads &amp; Highways</option>
+                    <option value="railways">Railways</option>
+                    <option value="water">Water</option>
+                    <option value="energy">Energy</option>
+                    <option value="healthcare">Healthcare</option>
+                    <option value="urban development">Urban Development</option>
+                </select>
+            </div>
+
+            <div class="filter-field">
+                <label for="state-filter">State</label>
+                <select id="state-filter">
+                    <option value="">All states</option>
+                    <option value="maharashtra">Maharashtra</option>
+                    <option value="gujarat">Gujarat</option>
+                    <option value="karnataka">Karnataka</option>
+                    <option value="rajasthan">Rajasthan</option>
+                    <option value="tamil nadu">Tamil Nadu</option>
+                    <option value="uttar pradesh">Uttar Pradesh</option>
+                    <option value="madhya pradesh">Madhya Pradesh</option>
+                    <option value="odisha">Odisha</option>
+                    <option value="telangana">Telangana</option>
+                    <option value="west bengal">West Bengal</option>
+                    <option value="delhi">Delhi</option>
+                    <option value="kerala">Kerala</option>
+                </select>
+            </div>
+
+            <div class="filter-actions">
+                <button type="button" id="reset-filters" class="button">
+                    Reset Filters
+                </button>
+            </div>
+
+        </div>
+
+        <div class="filter-summary">
+            <p id="results-count" aria-live="polite">
+                Showing {{ projects|length }} project(s)
+            </p>
+        </div>
+    </section>
+
+    <section id="project-list" class="projects-grid"
+             aria-label="Infrastructure projects">
+
+        {% for project in projects %}
+            <article
+                class="project-item"
+                data-name="{{ project.name|lower }}"
+                data-sector="{{ project.get_sector_display|lower }}"
+                data-state="{{ project.get_state_display|lower }}"
+            >
+                <div class="project-card-top">
+                    <span class="project-card-label">INFRASTRUCTURE PROJECT</span>
+                    <span class="project-card-sector">
+                        {{ project.get_sector_display }}
+                    </span>
+                </div>
+
+                <h2 class="project-card-title">
+                    <a href="{% url 'project_detail' project.pk %}">
+                        {{ project.name }}
+                    </a>
+                </h2>
+
+                <div class="project-card-details">
+                    <div class="project-detail">
+                        <span class="detail-label">State</span>
+                        <span class="detail-value">
+                            {{ project.get_state_display }}
+                        </span>
+                    </div>
+
+                    <div class="project-detail">
+                        <span class="detail-label">Estimated Cost</span>
+                        <span class="detail-value">
+                            ₹{{ project.project_cost_cr|floatformat:1 }} crore
+                        </span>
+                    </div>
+                </div>
+
+                <div class="project-card-actions">
+                    <a href="{% url 'project_detail' project.pk %}"
+                       class="project-view-link">
+                        View Details &rarr;
+                    </a>
+
+                    <div class="project-edit-actions">
+                        <a href="{% url 'project_update' project.pk %}">
+                            Edit
+                        </a>
+                        <a href="{% url 'project_delete' project.pk %}"
+                           class="project-delete-link">
+                            Delete
+                        </a>
+                    </div>
+                </div>
+            </article>
+        {% empty %}
+            <div class="projects-empty" id="no-projects-message">
+                <h3>No projects yet</h3>
+                <p>Create your first project to start tracking its information.</p>
+                <a href="{% url 'project_create' %}" class="button">
+                    + Create Project
+                </a>
+            </div>
+        {% endfor %}
+
+        <div class="projects-empty" id="no-matching-projects" hidden>
+            <h3>No matching projects</h3>
+            <p>Try changing your search or filters.</p>
+            <button type="button" id="empty-reset-filters" class="button">
+                Clear Filters
+            </button>
+        </div>
+
+    </section>
+
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/project_filters.js' %}"></script>
+{% endblock %}

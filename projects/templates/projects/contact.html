@@ -1,0 +1,88 @@
+{% extends 'projects/base.html' %}
+
+{% block title %}Contact | LandRisk AI{% endblock %}
+
+{% block content %}
+
+<section class="page-hero">
+    <span class="section-eyebrow">GET IN TOUCH</span>
+    <h1>Contact &amp; Feedback</h1>
+    <p>
+        Have a question, found an issue, or want to discuss the
+        project? LandRisk AI is a personal portfolio and learning
+        project, and constructive feedback can help guide its
+        future development.
+    </p>
+</section>
+
+<section class="contact-section">
+    <div class="section-heading">
+        <span class="section-eyebrow">CONNECT WITH THE PROJECT</span>
+        <h2>How Can You Contribute?</h2>
+        <p>
+            You can help improve the project by reviewing its
+            implementation, identifying issues, or suggesting
+            practical enhancements.
+        </p>
+    </div>
+
+    <div class="feature-grid">
+
+        <article class="feature-card">
+            <div class="feature-icon">01</div>
+            <h3>Report an Issue</h3>
+            <p>
+                Identify unexpected behavior, interface problems,
+                validation errors, or other technical issues
+                that could improve the application.
+            </p>
+        </article>
+
+        <article class="feature-card">
+            <div class="feature-icon">02</div>
+            <h3>Suggest an Improvement</h3>
+            <p>
+                Share ideas for project monitoring, dashboard
+                analytics, model evaluation, accessibility,
+                or future functionality.
+            </p>
+        </article>
+
+        <article class="feature-card">
+            <div class="feature-icon">03</div>
+            <h3>Explore the Code</h3>
+            <p>
+                Review the project's implementation and technical
+                decisions, particularly the Django integration,
+                machine learning pipeline, and automated tests.
+            </p>
+        </article>
+
+    </div>
+</section>
+
+<section class="contact-section contact-note">
+    <span class="section-eyebrow">PROJECT INFORMATION</span>
+    <h2>About This Initiative</h2>
+    <p>
+        LandRisk AI is an independent educational project inspired
+        by SIH26017: Predictive Analytics for Early Detection of
+        Land Acquisition Delays. It explores full-stack development,
+        data processing, and machine learning integration.
+    </p>
+    <p>
+        Its current model uses synthetic training data and is not
+        validated for real-world forecasting.
+    </p>
+
+    <div class="hero-actions">
+        <a href="{% url 'about' %}" class="button">
+            About the Project
+        </a>
+        <a href="{% url 'services' %}" class="button button-secondary">
+            Explore Services
+        </a>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,180 @@
+
+{% extends "projects/base.html" %}
+
+{% block title %}{{ page_title }} | LandRisk AI{% endblock %}
+
+{% block content %}
+
+<section class="project-form-page">
+
+    <header class="project-form-header">
+        <div>
+            <span class="page-eyebrow">PROJECT MANAGEMENT</span>
+            <h1>{{ page_title }}</h1>
+            <p>
+                Enter the project details below to maintain an organized
+                record and enable risk assessment.
+            </p>
+        </div>
+
+        <a href="{% url 'project_list' %}"
+           class="button button-secondary">
+            &larr; Back to Projects
+        </a>
+    </header>
+
+    <form method="post" class="project-form">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            <div class="form-error-summary" role="alert">
+                <strong>Please correct the following issue:</strong>
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        <section class="form-section">
+            <div class="form-section-heading">
+                <span class="form-section-number">01</span>
+                <div>
+                    <h2>Project Information</h2>
+                    <p>Identify the project and its estimated cost.</p>
+                </div>
+            </div>
+
+            <div class="form-grid">
+                {% for field in form %}
+                    {% if field.name == "name" or field.name == "sector" or field.name == "state" or field.name == "project_cost_cr" %}
+                        <div class="form-field">
+                            {{ field.label_tag }}
+                            {{ field }}
+
+                            {% if field.help_text %}
+                                <small class="field-help">{{ field.help_text }}</small>
+                            {% endif %}
+
+                            {% for error in field.errors %}
+                                <p class="field-error">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="form-section">
+            <div class="form-section-heading">
+                <span class="form-section-number">02</span>
+                <div>
+                    <h2>Schedule &amp; Progress</h2>
+                    <p>Record the timeline and current project status.</p>
+                </div>
+            </div>
+
+            <div class="form-grid">
+                {% for field in form %}
+                    {% if field.name == "planned_duration_months" or field.name == "months_elapsed" or field.name == "physical_progress_pct" or field.name == "expenditure_pct" %}
+                        <div class="form-field">
+                            {{ field.label_tag }}
+                            {{ field }}
+
+                            {% if field.help_text %}
+                                <small class="field-help">{{ field.help_text }}</small>
+                            {% endif %}
+
+                            {% for error in field.errors %}
+                                <p class="field-error">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="form-section">
+            <div class="form-section-heading">
+                <span class="form-section-number">03</span>
+                <div>
+                    <h2>Contractor Information</h2>
+                    <p>Provide the recorded contractor experience.</p>
+                </div>
+            </div>
+
+            <div class="form-grid">
+                {% for field in form %}
+                    {% if field.name == "contractor_experience_years" %}
+                        <div class="form-field">
+                            {{ field.label_tag }}
+                            {{ field }}
+
+                            {% if field.help_text %}
+                                <small class="field-help">{{ field.help_text }}</small>
+                            {% endif %}
+
+                            {% for error in field.errors %}
+                                <p class="field-error">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="form-section">
+            <div class="form-section-heading">
+                <span class="form-section-number">04</span>
+                <div>
+                    <h2>Land Acquisition</h2>
+                    <p>Record whether land acquisition is required and its progress.</p>
+                </div>
+            </div>
+
+            <div class="form-grid land-form-grid">
+                {% for field in form %}
+                    {% if field.name == "land_acquisition_required" %}
+                        <div class="form-field checkbox-field">
+                            {{ field }}
+                            {{ field.label_tag }}
+
+                            {% if field.help_text %}
+                                <small class="field-help">{{ field.help_text }}</small>
+                            {% endif %}
+
+                            {% for error in field.errors %}
+                                <p class="field-error">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% elif field.name == "land_acquisition_pct" %}
+                        <div class="form-field">
+                            {{ field.label_tag }}
+                            {{ field }}
+
+                            {% if field.help_text %}
+                                <small class="field-help">{{ field.help_text }}</small>
+                            {% endif %}
+
+                            {% for error in field.errors %}
+                                <p class="field-error">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </section>
+
+        <div class="project-form-actions">
+            <a href="{% url 'project_list' %}"
+               class="button button-secondary">
+                Cancel
+            </a>
+
+            <button type="submit" class="button">
+                Save Project
+            </button>
+        </div>
+
+    </form>
+
+</section>
+
+{% endblock %}
