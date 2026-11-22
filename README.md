@@ -114,7 +114,7 @@ LandRisk-AI/
 After the project is published on GitHub, replace the placeholder below with the actual repository URL:
 
 ```powershell
-git clone <YOUR_GITHUB_REPOSITORY_URL>
+git clone <MY_GITHUB_REPOSITORY_URL>
 cd LandRisk-AI
 ```
 
